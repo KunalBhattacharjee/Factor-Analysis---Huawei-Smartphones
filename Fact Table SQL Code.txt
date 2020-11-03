@@ -1,0 +1,75 @@
+USE [DWBI Project]
+
+GO
+
+
+
+DROP  Table [dbo].[FACT_Project];
+
+
+
+Create Table [dbo].[FACT_Project]
+(
+
+[Year_ID] [INT] FOREIGN KEY
+
+REFERENCES [dbo].[DIM_Calendar],
+
+[Company_ID] [INT] FOREIGN KEY
+
+REFERENCES [dbo].[DIM_Company],
+
+[Country_ID] [INT] FOREIGN KEY
+
+REFERENCES [dbo].[DIM_Country],
+
+[Fact_ShipmentShare]DECIMAL(8,2) NULL,
+
+[Fact_Usage]DECIMAL(10,2) NULL,
+
+[Fact_Hits]BIGINT NULL,
+
+[Fact_NRC]DECIMAL(8,2) NULL
+
+)
+
+
+
+
+GO
+
+TRUNCATE TABLE [dbo].[FACT_Project]
+
+
+Insert into [dbo].[FACT_Project]
+
+Select [Year_ID],[Company_ID],[Country_ID],
+
+[Shipment Share],[Usage],[Hits],[NRC]
+
+from [dbo].[Google Trends] T
+
+left join [dbo].Statista S
+
+on T.Key_Statista=S.Key_Statista
+
+left join [dbo].Eurostat E
+
+on T.Key_Eurostat=E.Key_Eurostat
+
+left join [dbo].Guardian G
+
+on T.Key_Statista=G.Key_Guardian
+
+left join [dbo].DIM_Country DC
+
+on T.Country=DC.Dim_Country
+
+left join [dbo].DIM_Company DC1
+
+on T.Company=DC1.Dim_Comapny
+
+left join [dbo].DIM_Calendar CA
+
+on (T.Year=CA.Dim_Year and T.Quarter=CA.Dim_Quarter)
+;

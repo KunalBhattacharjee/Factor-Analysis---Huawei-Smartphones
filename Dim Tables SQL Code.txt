@@ -1,0 +1,80 @@
+USE [DWBI Project]
+
+GO
+
+
+
+Drop Table [dbo].[DIM_Country]; 
+
+Drop Table [dbo].[DIM_Calendar]; 
+
+Drop Table [dbo].[DIM_Company];
+
+
+
+CREATE TABLE [DWBI Project].[dbo].[DIM_Calendar]
+
+(
+
+[Year_ID] [INT] IDENTITY(1,1) PRIMARY KEY,
+
+[Dim_Year] [VARCHAR](50) NULL,
+
+[Dim_Quarter] [VARCHAR](50) NULL,
+
+) 
+
+
+
+GO
+
+TRUNCATE TABLE [dbo].[DIM_Calendar]
+
+INSERT INTO [dbo].[DIM_Calendar]
+
+SELECT DISTINCT  [Year],[Quarter] FROM [dbo].[Google Trends];
+
+
+
+GO
+
+CREATE TABLE [dbo].[DIM_Company]
+(
+
+[Company_ID] [INT] IDENTITY(1,1) PRIMARY KEY,
+
+[Dim_Comapny] [VARCHAR](50) NULL,
+
+) 
+
+
+
+GO
+
+TRUNCATE TABLE [dbo].[DIM_Company]
+
+INSERT INTO [dbo].[DIM_Company] 
+
+SELECT DISTINCT [Company] FROM [dbo].[Statista];
+
+
+
+GO
+
+CREATE TABLE [dbo].[DIM_Country]
+(
+[Country_ID] [INT] IDENTITY(1,1) PRIMARY KEY,
+
+[Dim_Country] [VARCHAR](50) NULL,
+
+) 
+
+
+
+GO
+
+TRUNCATE TABLE [dbo].[DIM_Country]
+
+INSERT INTO [dbo].[DIM_Country]
+
+SELECT DISTINCT [Country] FROM [dbo].[Eurostat];
